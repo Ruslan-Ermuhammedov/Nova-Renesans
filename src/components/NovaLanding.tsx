@@ -12,8 +12,17 @@ export default function NovaLanding() {
   useEffect(() => {
     if (!rootRef.current) return;
 
+    const updateHeaderTheme = () => {
+      document.body.classList.toggle("is-light-section", window.scrollY > window.innerHeight * 0.72);
+    };
+
+    updateHeaderTheme();
+    window.addEventListener("scroll", updateHeaderTheme, { passive: true });
+
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+    if (prefersReduced) {
+      return () => window.removeEventListener("scroll", updateHeaderTheme);
+    }
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -106,6 +115,7 @@ export default function NovaLanding() {
     }, rootRef);
 
     return () => {
+      window.removeEventListener("scroll", updateHeaderTheme);
       mm.revert();
       ctx.revert();
     };
@@ -123,7 +133,10 @@ function Header() {
   return (
     <header className="site-header">
       <a href="#top" className="brand-mark" aria-label="Nova Renessans home">
-        <span className="brand-icon" aria-hidden="true" />
+        <span className="brand-icon" aria-hidden="true">
+          <img className="brand-logo brand-logo-white" src="/brand/nova_n_logo_white.svg" alt="" />
+          <img className="brand-logo brand-logo-dark" src="/brand/nova_n_logo_clean.svg" alt="" />
+        </span>
         <span className="leading-none">
           <span className="block text-[18px] font-black tracking-[-0.04em] md:text-[24px]">NOVA</span>
           <span className="block text-[10px] font-extrabold uppercase tracking-[0.34em] text-nova-green md:text-xs">

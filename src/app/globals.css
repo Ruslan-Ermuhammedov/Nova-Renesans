@@ -52,43 +52,31 @@ a {
   }
 
   .site-header {
-    @apply fixed left-1/2 top-4 z-[80] flex h-[72px] w-[calc(100%_-_28px)] max-w-[1540px] -translate-x-1/2 items-center justify-between rounded-full border border-white/60 bg-white/95 px-4 shadow-soft backdrop-blur-xl md:px-7;
+    @apply fixed left-1/2 top-4 z-[80] flex h-[72px] w-[calc(100%_-_28px)] max-w-[1540px] -translate-x-1/2 items-center justify-between rounded-full border border-white/15 bg-black/[0.28] px-4 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-2xl transition-colors duration-500 md:px-7;
   }
 
   .brand-mark {
-    @apply flex items-center gap-3 text-nova-black;
+    @apply flex items-center gap-3 text-white transition-colors duration-500;
   }
 
   .brand-icon {
-    @apply relative grid h-11 w-11 place-items-center rounded-full border border-nova-line bg-white shadow-sm;
+    @apply relative grid h-12 w-12 place-items-center rounded-full transition-colors duration-500;
   }
 
-  .brand-icon::before {
-    content: "";
-    position: absolute;
-    width: 21px;
-    height: 29px;
-    border-left: 5px solid var(--black);
-    border-right: 5px solid var(--black);
-    transform: skewX(-22deg);
+  .brand-logo {
+    @apply absolute inset-0 h-full w-full object-contain transition-opacity duration-500;
   }
 
-  .brand-icon::after {
-    content: "";
-    position: absolute;
-    width: 5px;
-    height: 36px;
-    transform: rotate(-42deg);
-    background: var(--green);
-    border-radius: 999px;
+  .brand-logo-dark {
+    @apply opacity-0;
   }
 
   .header-link {
-    @apply text-sm font-semibold text-nova-black/75 transition hover:text-nova-green;
+    @apply text-sm font-semibold text-white/[0.78] transition-colors duration-300 hover:text-white;
   }
 
   .primary-button {
-    @apply inline-flex items-center justify-center rounded-full bg-nova-black px-6 py-3 text-sm font-extrabold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-nova-green hover:shadow-green;
+    @apply inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-extrabold text-nova-black shadow-soft transition duration-300 hover:-translate-y-0.5 hover:bg-nova-green hover:text-white hover:shadow-green;
   }
 
   .outline-button {
@@ -96,7 +84,8 @@ a {
   }
 
   .hero-pin {
-    @apply relative min-h-screen overflow-hidden bg-nova-green text-white;
+    @apply relative min-h-screen overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white;
+    background-image: url("/brand/NovaSiteBg.png");
   }
 
   .hero-inner {
@@ -104,7 +93,7 @@ a {
   }
 
   .hero-title {
-    @apply mx-auto w-fit select-none whitespace-nowrap text-[clamp(6rem,22vw,24rem)] font-black uppercase leading-[0.82] tracking-[-0.035em] text-white will-change-transform;
+    @apply mx-auto w-fit select-none whitespace-nowrap text-[clamp(5.4rem,20vw,21.5rem)] font-black uppercase leading-[0.82] tracking-[-0.03em] text-white will-change-transform;
     backface-visibility: hidden;
     transform: translateZ(0);
     -webkit-font-smoothing: antialiased;
@@ -125,6 +114,34 @@ a {
   .story-title {
     @apply mx-auto max-w-[1180px] text-balance text-center text-[clamp(3.6rem,9.5vw,12.5rem)] font-black leading-[0.82] tracking-[-0.09em] text-nova-black;
     will-change: transform;
+  }
+
+  .is-light-section .site-header {
+    @apply border-nova-black/10 bg-white/[0.62] shadow-[0_24px_80px_rgba(0,0,0,0.12)];
+  }
+
+  .is-light-section .brand-mark {
+    @apply text-nova-black;
+  }
+
+  .is-light-section .brand-icon {
+    @apply bg-transparent;
+  }
+
+  .is-light-section .brand-logo-white {
+    @apply opacity-0;
+  }
+
+  .is-light-section .brand-logo-dark {
+    @apply opacity-100;
+  }
+
+  .is-light-section .header-link {
+    @apply text-nova-black/70 hover:text-nova-green;
+  }
+
+  .is-light-section .primary-button {
+    @apply bg-nova-black text-white hover:bg-nova-green;
   }
 }
 
@@ -164,9 +181,9 @@ a {
   }
 
   .hero-title {
-    font-size: clamp(5rem, 34vw, 11rem);
+    font-size: clamp(4.4rem, 30vw, 9.5rem);
     line-height: 0.88;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
   }
 
 }
