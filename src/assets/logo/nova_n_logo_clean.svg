@@ -1,5 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 182" width="152" height="182">
-  <polygon points="18,51 20,153 33,164 37,92 118,164 134,155" fill="#020202"/>
-  <polygon points="119,18 119,93 134,105 134,31" fill="#020202"/>
-  <polygon points="18,29 134,132 134,106 35,19" fill="#2C9010"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <title>Nova Renessans N logo</title>
+  <g fill="#000000" fill-rule="evenodd" transform="translate(8 0)">
+    <path d="M 24 47 L 24 129 L 28 133 L 34 135 L 37 135 L 39 80 L 45 86 L 53 92 L 100 133 L 103 135 L 114 135 L 118 133 L 119 131 L 115 127 L 105 119 L 34 55 Z"/>
+    <path d="M 26 26 L 24 29 L 109 102 L 110 102 L 116 108 L 117 108 L 119 110 L 119 32 L 118 30 L 114 26 L 109 24 L 106 24 L 105 78 L 103 76 L 102 76 L 96 70 L 95 70 L 75 52 L 42 24 L 30 24 Z"/>
+  </g>
 </svg>

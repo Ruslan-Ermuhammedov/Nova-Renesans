@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import { Work_Sans } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
+
+const workSans = Work_Sans({
+  subsets: ["latin"],
+  variable: "--font-work-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Nova Renessans — Reliable IT Solutions",
@@ -14,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={workSans.variable}>{children}</body>
     </html>
   );
 }

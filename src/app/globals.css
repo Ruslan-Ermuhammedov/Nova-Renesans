@@ -3,14 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --green: #2f9e20;
-  --green-dark: #17680f;
-  --black: #050505;
-  --ink: #101210;
-  --muted: #777d76;
-  --paper: #f7f8f5;
-  --line: #daddd7;
+  --blue: #2f74fa;
+  --blue-dark: #071f52;
+  --blue-soft: #8fb6ff;
+  --orange: #f24602;
+  --orange-dark: #7a2100;
+  --black: #070708;
+  --ink: #f7f9ff;
+  --muted: #9ba3b4;
+  --paper: #070708;
+  --surface: #0b1220;
+  --surface-blue: #0b275b;
+  --line: #18335f;
   --white: #ffffff;
+  --green: var(--orange);
+  --green-dark: var(--orange-dark);
 }
 
 * {
@@ -27,7 +34,7 @@ body {
   overflow-x: hidden;
   color: var(--ink);
   background: var(--paper);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-work-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 ::selection {
@@ -52,11 +59,11 @@ a {
   }
 
   .site-header {
-    @apply fixed left-1/2 top-4 z-[80] flex h-[72px] w-[calc(100%_-_28px)] max-w-[1540px] -translate-x-1/2 items-center justify-between rounded-full border border-white/15 bg-black/[0.28] px-4 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-2xl transition-colors duration-500 md:px-7;
+    @apply fixed left-1/2 top-4 z-[80] flex h-[72px] w-[calc(100%_-_28px)] max-w-[1540px] -translate-x-1/2 items-center justify-between rounded-full border border-transparent bg-transparent px-4 shadow-none backdrop-blur-none transition-all duration-700 md:px-7;
   }
 
   .brand-mark {
-    @apply flex items-center gap-3 text-white transition-colors duration-500;
+    @apply flex items-center gap-3 text-white transition-colors duration-700;
   }
 
   .brand-icon {
@@ -64,7 +71,7 @@ a {
   }
 
   .brand-logo {
-    @apply absolute inset-0 h-full w-full object-contain transition-opacity duration-500;
+    @apply absolute inset-0 h-full w-full object-contain transition-opacity duration-700;
   }
 
   .brand-logo-dark {
@@ -72,28 +79,37 @@ a {
   }
 
   .header-link {
-    @apply text-sm font-semibold text-white/[0.78] transition-colors duration-300 hover:text-white;
+    @apply relative text-sm font-semibold text-white/[0.72] transition-colors duration-300 hover:text-white;
+  }
+
+  .header-link::after {
+    content: "";
+    @apply absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-current opacity-80 transition-transform duration-300 ease-out;
+  }
+
+  .header-link:hover::after {
+    @apply scale-x-100;
   }
 
   .primary-button {
-    @apply inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-extrabold text-nova-black shadow-soft transition duration-300 hover:-translate-y-0.5 hover:bg-nova-green hover:text-white hover:shadow-green;
+    @apply inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-extrabold text-nova-black shadow-none transition duration-300 hover:-translate-y-0.5 hover:bg-nova-orange hover:text-white hover:shadow-orange;
   }
 
   .outline-button {
-    @apply inline-flex items-center justify-center rounded-full border border-white/45 px-6 py-3 text-sm font-extrabold text-white transition hover:bg-white hover:text-nova-green;
+    @apply inline-flex items-center justify-center rounded-full border border-white/[0.45] px-6 py-3 text-sm font-extrabold text-white transition hover:bg-white hover:text-nova-orange;
   }
 
   .hero-pin {
     @apply relative min-h-screen overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white;
-    background-image: url("/brand/NovaSiteBg.png");
+    background-image: url("/brand/NovaBacround.png");
   }
 
   .hero-inner {
-    @apply relative z-10 flex min-h-screen items-center justify-center px-5 pt-28 text-center;
+    @apply relative z-10 flex min-h-screen items-center justify-center px-5 pb-12 text-center;
   }
 
   .hero-title {
-    @apply mx-auto w-fit select-none whitespace-nowrap text-[clamp(5.4rem,20vw,21.5rem)] font-black uppercase leading-[0.82] tracking-[-0.03em] text-white will-change-transform;
+    @apply mx-auto w-fit select-none whitespace-nowrap text-[clamp(5rem,18.5vw,19.8rem)] font-black uppercase leading-[0.82] tracking-[-0.03em] text-white will-change-transform;
     backface-visibility: hidden;
     transform: translateZ(0);
     -webkit-font-smoothing: antialiased;
@@ -108,20 +124,56 @@ a {
   }
 
   .story-reveal {
-    @apply absolute left-1/2 top-[54vh] w-full max-w-[1320px] -translate-x-1/2 px-5 md:px-8;
+    @apply absolute left-1/2 top-[38vh] w-full max-w-[1320px] -translate-x-1/2 px-5 md:px-8;
   }
 
   .story-title {
-    @apply mx-auto max-w-[1180px] text-balance text-center text-[clamp(3.6rem,9.5vw,12.5rem)] font-black leading-[0.82] tracking-[-0.09em] text-nova-black;
+    @apply mx-auto max-w-[1080px] text-balance text-center text-[clamp(2.9rem,7.5vw,9.6rem)] font-medium leading-[0.98] tracking-[-0.045em] text-nova-black;
     will-change: transform;
   }
 
+  .is-scrolled .site-header {
+    @apply bg-white/[0.18] shadow-none backdrop-blur-xl;
+  }
+
+  .is-hero-zooming .site-header {
+    @apply bg-white/[0.24] shadow-none backdrop-blur-2xl;
+  }
+
+  .is-hero-zooming .brand-mark {
+    @apply text-white;
+  }
+
+  .is-hero-zooming .brand-mark span span:last-child {
+    @apply text-white/70;
+  }
+
+  .is-hero-zooming .brand-logo-white {
+    @apply opacity-100;
+  }
+
+  .is-hero-zooming .brand-logo-dark {
+    @apply opacity-0;
+  }
+
+  .is-hero-zooming .header-link {
+    @apply text-white/[0.78] hover:text-white;
+  }
+
+  .is-hero-zooming .primary-button {
+    @apply bg-white text-nova-black hover:bg-nova-orange hover:text-white;
+  }
+
   .is-light-section .site-header {
-    @apply border-nova-black/10 bg-white/[0.62] shadow-[0_24px_80px_rgba(0,0,0,0.12)];
+    @apply bg-white/[0.42] shadow-none backdrop-blur-2xl;
   }
 
   .is-light-section .brand-mark {
     @apply text-nova-black;
+  }
+
+  .is-light-section .brand-mark span span:last-child {
+    @apply text-nova-black/60;
   }
 
   .is-light-section .brand-icon {
@@ -137,11 +189,118 @@ a {
   }
 
   .is-light-section .header-link {
-    @apply text-nova-black/70 hover:text-nova-green;
+    @apply text-nova-black/65 hover:text-nova-black;
   }
 
   .is-light-section .primary-button {
-    @apply bg-nova-black text-white hover:bg-nova-green;
+    @apply bg-nova-black text-white hover:bg-nova-orange;
+  }
+
+  .is-dark-section .site-header {
+    @apply bg-white/[0.035] shadow-none backdrop-blur-2xl;
+  }
+
+  .is-dark-section .brand-mark {
+    @apply text-white;
+  }
+
+  .is-dark-section .brand-mark span span:last-child {
+    @apply text-white/70;
+  }
+
+  .is-dark-section .brand-logo-white {
+    @apply opacity-100;
+  }
+
+  .is-dark-section .brand-logo-dark {
+    @apply opacity-0;
+  }
+
+  .is-dark-section .header-link {
+    @apply text-white/[0.72] hover:text-white;
+  }
+
+  .is-dark-section .primary-button {
+    @apply bg-white text-nova-black hover:bg-nova-orange hover:text-white;
+  }
+}
+
+@media (max-width: 1720px) {
+  .site-header {
+    height: 66px;
+    max-width: 1360px;
+    width: calc(100% - 44px);
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .brand-mark {
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .brand-mark span span:first-child {
+    font-size: 21px;
+  }
+
+  .brand-mark span span:last-child {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+  }
+
+  .site-header nav {
+    gap: 28px;
+  }
+
+  .header-link {
+    font-size: 13px;
+  }
+
+  .primary-button {
+    padding: 11px 22px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .site-header {
+    height: 62px;
+    max-width: 1120px;
+    width: calc(100% - 32px);
+    top: 12px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .brand-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .brand-mark span span:first-child {
+    font-size: 18px;
+  }
+
+  .brand-mark span span:last-child {
+    font-size: 9px;
+    letter-spacing: 0.28em;
+  }
+
+  .site-header nav {
+    gap: 22px;
+  }
+
+  .header-link {
+    font-size: 12px;
+  }
+
+  .primary-button {
+    padding: 10px 18px;
+    font-size: 12px;
   }
 }
 
@@ -181,7 +340,7 @@ a {
   }
 
   .hero-title {
-    font-size: clamp(4.4rem, 30vw, 9.5rem);
+    font-size: clamp(4rem, 27vw, 8.6rem);
     line-height: 0.88;
     letter-spacing: -0.02em;
   }

@@ -13,7 +13,17 @@ export default function NovaLanding() {
     if (!rootRef.current) return;
 
     const updateHeaderTheme = () => {
-      document.body.classList.toggle("is-light-section", window.scrollY > window.innerHeight * 0.72);
+      const heroLightStart = window.innerHeight * 0.48;
+      const heroLightEnd = window.innerHeight * (window.innerWidth >= 1024 ? 3.65 : 2.82);
+      const darkNavSection = document.querySelector<HTMLElement>("[data-dark-nav='true']");
+      const isDarkSectionActive = darkNavSection ? darkNavSection.getBoundingClientRect().top <= window.innerHeight * 0.72 : false;
+      document.body.classList.toggle("is-scrolled", window.scrollY > 0);
+      document.body.classList.toggle("is-hero-zooming", window.scrollY > 0 && window.scrollY < heroLightStart);
+      document.body.classList.toggle("is-dark-section", isDarkSectionActive);
+      document.body.classList.toggle(
+        "is-light-section",
+        !isDarkSectionActive && window.scrollY > heroLightStart && window.scrollY < heroLightEnd,
+      );
     };
 
     updateHeaderTheme();
@@ -21,7 +31,10 @@ export default function NovaLanding() {
 
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
-      return () => window.removeEventListener("scroll", updateHeaderTheme);
+      return () => {
+        window.removeEventListener("scroll", updateHeaderTheme);
+        document.body.classList.remove("is-scrolled", "is-light-section", "is-hero-zooming", "is-dark-section");
+      };
     }
 
     gsap.registerPlugin(ScrollTrigger);
@@ -29,7 +42,7 @@ export default function NovaLanding() {
     const mm = gsap.matchMedia();
     const ctx = gsap.context(() => {
       gsap.set(".hero-title", {
-        transformOrigin: "14% 50%",
+        transformOrigin: "49% 50%",
         force3D: true,
       });
       gsap.set(".story-reveal", {
@@ -47,6 +60,9 @@ export default function NovaLanding() {
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              document.body.classList.toggle("is-hero-zooming", self.progress > 0.001 && self.progress < 0.92);
+            },
           },
         });
 
@@ -55,7 +71,7 @@ export default function NovaLanding() {
             ".hero-title",
             {
               scale: 72,
-              xPercent: 14,
+              xPercent: -1.5,
               yPercent: 0,
               letterSpacing: "-0.06em",
               duration: 1,
@@ -84,6 +100,9 @@ export default function NovaLanding() {
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              document.body.classList.toggle("is-hero-zooming", self.progress > 0.001 && self.progress < 0.92);
+            },
           },
         });
 
@@ -92,7 +111,7 @@ export default function NovaLanding() {
             ".hero-title",
             {
               scale: 38,
-              xPercent: 12,
+              xPercent: -2,
               yPercent: 2,
               letterSpacing: "-0.045em",
               duration: 1,
@@ -116,6 +135,7 @@ export default function NovaLanding() {
 
     return () => {
       window.removeEventListener("scroll", updateHeaderTheme);
+      document.body.classList.remove("is-scrolled", "is-light-section", "is-hero-zooming", "is-dark-section");
       mm.revert();
       ctx.revert();
     };
@@ -139,7 +159,7 @@ function Header() {
         </span>
         <span className="leading-none">
           <span className="block text-[18px] font-black tracking-[-0.04em] md:text-[24px]">NOVA</span>
-          <span className="block text-[10px] font-extrabold uppercase tracking-[0.34em] text-nova-green md:text-xs">
+          <span className="block text-[10px] font-extrabold uppercase tracking-[0.34em] text-white/70 md:text-xs">
             Renessans
           </span>
         </span>
