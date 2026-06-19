@@ -79,7 +79,7 @@ a {
   }
 
   .header-link {
-    @apply relative text-sm font-semibold text-white/[0.72] transition-colors duration-300 hover:text-white;
+    @apply relative text-sm font-medium text-white/[0.72] transition-colors duration-300 hover:text-white;
   }
 
   .header-link::after {
@@ -92,11 +92,11 @@ a {
   }
 
   .primary-button {
-    @apply inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-extrabold text-nova-black shadow-none transition duration-300 hover:-translate-y-0.5 hover:bg-nova-orange hover:text-white hover:shadow-orange;
+    @apply inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-medium text-nova-black shadow-none transition duration-300 hover:-translate-y-0.5 hover:bg-nova-orange hover:text-white hover:shadow-orange;
   }
 
   .outline-button {
-    @apply inline-flex items-center justify-center rounded-full border border-white/[0.45] px-6 py-3 text-sm font-extrabold text-white transition hover:bg-white hover:text-nova-orange;
+    @apply inline-flex items-center justify-center rounded-full border border-white/[0.45] px-6 py-3 text-sm font-medium text-white transition hover:bg-white hover:text-nova-orange;
   }
 
   .hero-pin {
@@ -222,6 +222,42 @@ a {
 
   .is-dark-section .primary-button {
     @apply bg-white text-nova-black hover:bg-nova-orange hover:text-white;
+  }
+
+  .brand-carousel {
+    --brand-carousel-distance: calc(-100% / 3);
+  }
+
+  .brand-carousel-track {
+    will-change: transform;
+  }
+
+  .brand-carousel-track-left {
+    animation: brand-carousel-left 36s linear infinite;
+  }
+
+  .brand-carousel-track-right {
+    animation: brand-carousel-right 40s linear infinite;
+  }
+}
+
+@keyframes brand-carousel-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(var(--brand-carousel-distance), 0, 0);
+  }
+}
+
+@keyframes brand-carousel-right {
+  from {
+    transform: translate3d(var(--brand-carousel-distance), 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -350,6 +386,10 @@ a {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .brand-carousel-track {
+    animation: none !important;
   }
 
   *,

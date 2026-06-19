@@ -158,8 +158,8 @@ function Header() {
           <img className="brand-logo brand-logo-dark" src="/brand/nova_n_logo_clean.svg" alt="" />
         </span>
         <span className="leading-none">
-          <span className="block text-[18px] font-black tracking-[-0.04em] md:text-[24px]">NOVA</span>
-          <span className="block text-[10px] font-extrabold uppercase tracking-[0.34em] text-white/70 md:text-xs">
+          <span className="block text-[18px] font-semibold tracking-[-0.035em] md:text-[24px]">NOVA</span>
+          <span className="block text-[10px] font-medium uppercase tracking-[0.34em] text-white/70 md:text-xs">
             Renessans
           </span>
         </span>
