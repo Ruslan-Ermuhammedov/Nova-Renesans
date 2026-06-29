@@ -12,28 +12,56 @@ export default function NovaLanding() {
   useEffect(() => {
     if (!rootRef.current) return;
 
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let lastScrollY = window.scrollY;
+    let revealHeaderTimeout: number | null = null;
+
     const updateHeaderTheme = () => {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
       const heroLightStart = window.innerHeight * 0.48;
       const heroLightEnd = window.innerHeight * (window.innerWidth >= 1024 ? 3.65 : 2.82);
       const darkNavSection = document.querySelector<HTMLElement>("[data-dark-nav='true']");
       const isDarkSectionActive = darkNavSection ? darkNavSection.getBoundingClientRect().top <= window.innerHeight * 0.72 : false;
-      document.body.classList.toggle("is-scrolled", window.scrollY > 0);
-      document.body.classList.toggle("is-hero-zooming", window.scrollY > 0 && window.scrollY < heroLightStart);
+      document.body.classList.toggle("is-scrolled", currentScrollY > 0);
+      document.body.classList.toggle("is-hero-zooming", currentScrollY > 0 && currentScrollY < heroLightStart);
       document.body.classList.toggle("is-dark-section", isDarkSectionActive);
       document.body.classList.toggle(
         "is-light-section",
-        !isDarkSectionActive && window.scrollY > heroLightStart && window.scrollY < heroLightEnd,
+        !isDarkSectionActive && currentScrollY > heroLightStart && currentScrollY < heroLightEnd,
       );
+
+      if (!prefersReduced) {
+        if (revealHeaderTimeout) window.clearTimeout(revealHeaderTimeout);
+
+        if (currentScrollY < 24 || scrollDelta < -4) {
+          document.body.classList.remove("is-header-hidden");
+        } else if (scrollDelta > 4) {
+          document.body.classList.add("is-header-hidden");
+        }
+
+        revealHeaderTimeout = window.setTimeout(() => {
+          document.body.classList.remove("is-header-hidden");
+        }, 2000);
+      }
+
+      lastScrollY = currentScrollY;
     };
 
     updateHeaderTheme();
     window.addEventListener("scroll", updateHeaderTheme, { passive: true });
 
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
       return () => {
+        if (revealHeaderTimeout) window.clearTimeout(revealHeaderTimeout);
         window.removeEventListener("scroll", updateHeaderTheme);
-        document.body.classList.remove("is-scrolled", "is-light-section", "is-hero-zooming", "is-dark-section");
+        document.body.classList.remove(
+          "is-scrolled",
+          "is-light-section",
+          "is-hero-zooming",
+          "is-dark-section",
+          "is-header-hidden",
+        );
       };
     }
 
@@ -51,11 +79,13 @@ export default function NovaLanding() {
       });
 
       mm.add("(min-width: 1024px)", () => {
+        const isCompactDesktop = window.innerWidth < 1920 || window.innerHeight < 900;
+
         const heroTl = gsap.timeline({
           scrollTrigger: {
             trigger: ".hero-pin",
             start: "top top",
-            end: "+=380%",
+            end: isCompactDesktop ? "+=360%" : "+=440%",
             scrub: 1.45,
             pin: true,
             anticipatePin: 1,
@@ -70,7 +100,7 @@ export default function NovaLanding() {
           .to(
             ".hero-title",
             {
-              scale: 72,
+              scale: 136,
               xPercent: -1.5,
               yPercent: 0,
               letterSpacing: "-0.06em",
@@ -83,10 +113,17 @@ export default function NovaLanding() {
             ".story-reveal",
             {
               y: 0,
-              duration: 0.58,
+              duration: 0.5,
               ease: "none",
             },
-            0.18,
+            isCompactDesktop ? 0.28 : 0.46,
+          )
+          .to(
+            {},
+            {
+              duration: 0.28,
+              ease: "none",
+            },
           );
       });
 
@@ -95,7 +132,7 @@ export default function NovaLanding() {
           scrollTrigger: {
             trigger: ".hero-pin",
             start: "top top",
-            end: "+=300%",
+            end: "+=360%",
             scrub: 1.3,
             pin: true,
             anticipatePin: 1,
@@ -110,7 +147,7 @@ export default function NovaLanding() {
           .to(
             ".hero-title",
             {
-              scale: 38,
+              scale: 78,
               xPercent: -2,
               yPercent: 2,
               letterSpacing: "-0.045em",
@@ -123,10 +160,17 @@ export default function NovaLanding() {
             ".story-reveal",
             {
               y: 0,
-              duration: 0.6,
+              duration: 0.52,
               ease: "none",
             },
-            0.16,
+            0.46,
+          )
+          .to(
+            {},
+            {
+              duration: 0.28,
+              ease: "none",
+            },
           );
       });
 
@@ -134,8 +178,9 @@ export default function NovaLanding() {
     }, rootRef);
 
     return () => {
+      if (revealHeaderTimeout) window.clearTimeout(revealHeaderTimeout);
       window.removeEventListener("scroll", updateHeaderTheme);
-      document.body.classList.remove("is-scrolled", "is-light-section", "is-hero-zooming", "is-dark-section");
+      document.body.classList.remove("is-scrolled", "is-light-section", "is-hero-zooming", "is-dark-section", "is-header-hidden");
       mm.revert();
       ctx.revert();
     };
@@ -158,8 +203,8 @@ function Header() {
           <img className="brand-logo brand-logo-dark" src="/brand/nova_n_logo_clean.svg" alt="" />
         </span>
         <span className="leading-none">
-          <span className="block text-[18px] font-semibold tracking-[-0.035em] md:text-[24px]">NOVA</span>
-          <span className="block text-[10px] font-medium uppercase tracking-[0.34em] text-white/70 md:text-xs">
+          <span className="block text-[18px] font-medium tracking-[-0.02em] md:text-[24px]">NOVA</span>
+          <span className="block text-[10px] font-normal uppercase tracking-[0.34em] text-white/70 md:text-xs">
             Renessans
           </span>
         </span>

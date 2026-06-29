@@ -64,6 +64,7 @@ export default function ImpactStatsSection() {
   const backgroundRef = useRef<HTMLImageElement | null>(null);
   const introRef = useRef<HTMLDivElement | null>(null);
   const trustedRef = useRef<HTMLDivElement | null>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
   const statRefs = useRef<Array<HTMLElement | null>>([]);
   const numberRefs = useRef<Array<HTMLParagraphElement | null>>([]);
 
@@ -73,42 +74,54 @@ export default function ImpactStatsSection() {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    let revealObserver: IntersectionObserver | null = null;
+    let brandObserver: IntersectionObserver | null = null;
+
     const ctx = gsap.context(() => {
-      gsap.set([introRef.current, trustedRef.current], { autoAlpha: 0, y: 28 });
-      gsap.set(statRefs.current, { autoAlpha: 0, y: 34 });
-      gsap.set(".impact-stat-line", { scaleX: 0, transformOrigin: "left center" });
+      gsap.set([introRef.current, trustedRef.current, carouselRef.current], { autoAlpha: 0, y: 34 });
+      gsap.set(".trusted-label", { letterSpacing: "0.38em" });
+      gsap.set(carouselRef.current, { filter: "blur(10px)" });
+      gsap.set(".brand-logo-pill", {
+        autoAlpha: 0,
+        y: 26,
+        scale: 0.96,
+        filter: "blur(8px)",
+        transformOrigin: "50% 50%",
+      });
+      gsap.set(statRefs.current, { autoAlpha: 0, y: 42 });
+      gsap.set(".impact-stat-line", { autoAlpha: 1, scaleX: 0, transformOrigin: "left center" });
       gsap.set(".impact-stat-dot", { autoAlpha: 0, scale: 0.55, transformOrigin: "50% 50%" });
+      numberRefs.current.forEach((target) => {
+        if (target) target.textContent = "0+";
+      });
 
       const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 62%",
-          once: true,
-        },
+        paused: true,
         defaults: {
           ease: "power3.out",
         },
       });
 
-      tl.to(introRef.current, { autoAlpha: 1, y: 0, duration: 0.9 })
+      tl.to(introRef.current, { autoAlpha: 1, y: 0, duration: 0.95 })
         .to(
           statRefs.current,
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.85,
-            stagger: 0.13,
+            duration: 0.95,
+            stagger: 0.16,
           },
-          0.18,
+          0.22,
         )
         .to(
           ".impact-stat-line",
           {
             scaleX: 1,
-            duration: 0.85,
-            stagger: 0.12,
+            duration: 1.1,
+            stagger: 0.18,
+            ease: "power2.inOut",
           },
-          0.46,
+          0.72,
         )
         .to(
           ".impact-stat-dot",
@@ -118,9 +131,8 @@ export default function ImpactStatsSection() {
             duration: 0.45,
             stagger: 0.12,
           },
-          0.62,
-        )
-        .to(trustedRef.current, { autoAlpha: 1, y: 0, duration: 0.7 }, 0.82);
+          0.74,
+        );
 
       stats.forEach((stat, index) => {
         const target = numberRefs.current[index];
@@ -131,15 +143,87 @@ export default function ImpactStatsSection() {
           counter,
           {
             value: stat.number,
-            duration: 1.35,
+            duration: 1.55,
             ease: "power2.out",
             onUpdate: () => {
               target.textContent = `${Math.round(counter.value)}+`;
             },
           },
-          0.25 + index * 0.1,
+          0.44 + index * 0.14,
         );
       });
+
+      revealObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry || entry.intersectionRatio < 0.58) return;
+
+          tl.play();
+          revealObserver?.disconnect();
+          revealObserver = null;
+        },
+        {
+          threshold: [0, 0.58],
+        },
+      );
+
+      revealObserver.observe(sectionRef.current!);
+
+      const brandTl = gsap.timeline({
+        paused: true,
+        defaults: {
+          ease: "power3.out",
+        },
+      });
+
+      brandTl
+        .to(trustedRef.current, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.9,
+        })
+        .to(".trusted-label", { letterSpacing: "0.24em", duration: 0.9 }, 0)
+        .to(
+          carouselRef.current,
+          {
+            autoAlpha: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 0.7,
+          },
+          0.22,
+        )
+        .to(
+          ".brand-logo-pill",
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 0.82,
+            stagger: {
+              each: 0.035,
+              from: "center",
+            },
+          },
+          0.34,
+        );
+
+      if (trustedRef.current) {
+        brandObserver = new IntersectionObserver(
+          ([entry]) => {
+            if (!entry || entry.intersectionRatio < 0.45) return;
+
+            brandTl.play();
+            brandObserver?.disconnect();
+            brandObserver = null;
+          },
+          {
+            threshold: [0, 0.45],
+          },
+        );
+
+        brandObserver.observe(trustedRef.current);
+      }
 
       if (backgroundRef.current) {
         gsap.fromTo(
@@ -160,14 +244,18 @@ export default function ImpactStatsSection() {
       }
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      revealObserver?.disconnect();
+      brandObserver?.disconnect();
+      ctx.revert();
+    };
   }, []);
 
   return (
     <section
       ref={sectionRef}
       data-dark-nav="true"
-      className="relative z-40 -mt-[76vh] min-h-[920px] overflow-hidden bg-[#030304] px-5 pb-10 pt-[210px] text-white md:min-h-[940px] md:px-10 md:pt-[220px] lg:min-h-[960px] lg:px-16 lg:pt-[235px] min-[1900px]:min-h-[1060px] min-[1900px]:pt-[315px]"
+      className="relative z-40 -mt-[76vh] min-h-[920px] overflow-hidden bg-[#030304] pb-10 pt-[210px] text-white md:min-h-[940px] md:pt-[220px] lg:min-h-[960px] lg:pt-[235px] min-[1900px]:min-h-[1060px] min-[1900px]:pt-[315px]"
     >
       <div className="pointer-events-none absolute inset-0">
         <img
@@ -179,19 +267,19 @@ export default function ImpactStatsSection() {
         <div className="absolute inset-x-0 top-[50%] h-px bg-white/[0.025]" />
       </div>
 
-      <div className="relative mx-auto grid max-w-[1600px] gap-14 lg:grid-cols-[0.92fr_1.35fr] lg:gap-24 min-[1900px]:max-w-[1740px] min-[1900px]:grid-cols-[0.84fr_1.42fr] min-[1900px]:gap-40">
+      <div className="section-container relative grid gap-14 lg:grid-cols-2 lg:gap-28 xl:gap-36 min-[1900px]:gap-44">
         <div ref={introRef} className="max-w-[610px] pt-0 min-[1900px]:max-w-[660px]">
-          <h2 className="text-balance text-[clamp(2rem,2.85vw,3.55rem)] font-medium leading-[1.05] tracking-[-0.052em] min-[1900px]:text-[4.08rem]">
+          <h2 className="text-balance text-[clamp(2rem,2.85vw,3.55rem)] font-normal leading-[1.05] tracking-[-0.052em] min-[1900px]:text-[4.08rem]">
             A tech partner helping to transform, innovate, and achieve real results.
           </h2>
-          <p className="mt-7 max-w-[560px] text-[clamp(0.95rem,0.92vw,1.08rem)] font-medium leading-7 text-white/43 min-[1900px]:max-w-[620px] min-[1900px]:text-lg min-[1900px]:leading-7">
+          <p className="mt-7 max-w-[560px] text-[clamp(0.95rem,0.92vw,1.08rem)] font-normal leading-7 text-white/43 min-[1900px]:max-w-[620px] min-[1900px]:text-lg min-[1900px]:leading-7">
             With a presence in key regions worldwide, we bring local insights to global projects,
             ensuring every solution is tailored to client needs and requirements.
           </p>
 
           <a
             href="#story"
-            className="mt-12 inline-flex h-12 items-center gap-4 border border-white bg-white px-5 text-[12px] font-black uppercase tracking-[0.12em] text-[#070708] transition duration-300 hover:border-nova-orange hover:bg-nova-orange hover:text-white"
+            className="mt-12 inline-flex h-12 items-center gap-4 border border-white bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#070708] transition duration-300 hover:border-nova-orange hover:bg-nova-orange hover:text-white"
           >
             <span aria-hidden="true" className="relative h-4 w-4">
               <span className="absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 bg-current" />
@@ -214,13 +302,15 @@ export default function ImpactStatsSection() {
         </div>
       </div>
 
-      <div ref={trustedRef} className="relative mx-auto mt-20 flex max-w-[1600px] justify-center text-center md:mt-24 min-[1900px]:mt-24 min-[1900px]:max-w-[1740px]">
-        <p className="font-mono text-xs uppercase tracking-[0.24em] text-white/56 md:text-sm">
+      <div ref={trustedRef} className="section-container relative mt-20 flex justify-center text-center md:mt-24 min-[1900px]:mt-24">
+        <p className="trusted-label text-xs uppercase tracking-[0.24em] text-white/56 md:text-sm">
           [ Trusted by leading global brands ]
         </p>
       </div>
 
-      <BrandCarousel />
+      <BrandCarousel refCallback={(node) => {
+        carouselRef.current = node;
+      }} />
     </section>
   );
 }
@@ -254,13 +344,13 @@ function StatCard({
           ref={(node) => {
             numberRefs.current[index] = node;
           }}
-          className="text-[clamp(4rem,5.8vw,6.9rem)] font-semibold leading-[0.84] tracking-[-0.075em] text-white min-[1900px]:text-[7.35rem]"
+          className="text-[clamp(4rem,5.8vw,6.9rem)] font-medium leading-[0.84] tracking-[-0.075em] text-white min-[1900px]:text-[7.35rem]"
         >
           {stat.value}
         </p>
         <span className="impact-stat-dot mb-2.5 h-3 w-3 shrink-0 bg-nova-orange" aria-hidden="true" />
       </div>
-      <p className="mt-6 max-w-[350px] text-[clamp(0.92rem,0.9vw,1.02rem)] font-semibold leading-6 text-white/50 min-[1900px]:max-w-[380px] min-[1900px]:text-[1.05rem] min-[1900px]:leading-6">
+      <p className="mt-6 max-w-[350px] text-[clamp(0.92rem,0.9vw,1.02rem)] font-medium leading-6 text-white/50 min-[1900px]:max-w-[380px] min-[1900px]:text-[1.05rem] min-[1900px]:leading-6">
         {stat.label}
       </p>
       <span className="impact-stat-line absolute bottom-0 left-0 h-px w-full bg-white/[0.13]" aria-hidden="true" />
@@ -268,9 +358,12 @@ function StatCard({
   );
 }
 
-function BrandCarousel() {
+function BrandCarousel({ refCallback }: { refCallback: (node: HTMLDivElement | null) => void }) {
   return (
-    <div className="brand-carousel relative left-1/2 mt-16 w-screen -translate-x-1/2 overflow-hidden py-1 min-[1900px]:mt-[4.5rem]">
+    <div
+      ref={refCallback}
+      className="brand-carousel relative left-1/2 mt-16 w-screen -translate-x-1/2 overflow-hidden py-1 min-[1900px]:mt-[4.5rem]"
+    >
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[24vw] bg-gradient-to-r from-[#030304] via-[#030304]/94 to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[24vw] bg-gradient-to-l from-[#030304] via-[#030304]/94 to-transparent" />
 
@@ -308,11 +401,10 @@ function CarouselRow({
 
 function LogoPill({ logo }: { logo: BrandLogo }) {
   return (
-    <div className="group relative flex h-[52px] min-w-[160px] items-center justify-center gap-2.5 overflow-hidden rounded-[1px] border border-[#1E4E9E] bg-[#08162D] px-5 text-[#2F63C7] shadow-[0_0_18px_rgba(47,107,217,0.22),inset_0_0_0_1px_rgba(47,107,217,0.12),inset_0_-22px_34px_rgba(5,9,15,0.30)] transition-colors duration-300 before:absolute before:inset-0 before:bg-[linear-gradient(180deg,rgba(47,107,217,0.08)_0%,rgba(5,9,15,0.16)_100%)] hover:border-[#2F63C7] hover:shadow-[0_0_22px_rgba(47,107,217,0.35),inset_0_0_0_1px_rgba(47,107,217,0.14),inset_0_-22px_34px_rgba(5,9,15,0.30)] md:h-[64px] md:min-w-[196px] min-[1900px]:h-[74px] min-[1900px]:min-w-[228px]">
+    <div className="brand-logo-pill group relative flex h-[52px] min-w-[160px] items-center justify-center gap-2.5 overflow-hidden rounded-[1px] border border-[#1E4E9E] bg-[#08162D] px-5 text-[#2F63C7] shadow-[0_0_18px_rgba(47,107,217,0.22),inset_0_0_0_1px_rgba(47,107,217,0.12),inset_0_-22px_34px_rgba(5,9,15,0.30)] transition-colors duration-300 before:absolute before:inset-0 before:bg-[linear-gradient(180deg,rgba(47,107,217,0.08)_0%,rgba(5,9,15,0.16)_100%)] hover:border-[#2F63C7] hover:shadow-[0_0_22px_rgba(47,107,217,0.35),inset_0_0_0_1px_rgba(47,107,217,0.14),inset_0_-22px_34px_rgba(5,9,15,0.30)] md:h-[64px] md:min-w-[196px] min-[1900px]:h-[74px] min-[1900px]:min-w-[228px]">
       <LogoMark logo={logo} />
       <span
         className="relative whitespace-nowrap text-[0.96rem] font-bold tracking-[-0.035em] text-[#2F63C7] drop-shadow-[0_0_8px_rgba(47,99,199,0.25)] group-hover:text-[#376dd7] md:text-[1.18rem] min-[1900px]:text-[1.36rem]"
-        style={{ fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" }}
       >
         {logo.name}
       </span>
