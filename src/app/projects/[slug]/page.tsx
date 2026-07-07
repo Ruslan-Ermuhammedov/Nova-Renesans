@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Plus, Sparkle } from "lucide-react";
+import { ArrowLeft, Sparkle } from "lucide-react";
+import ProjectHorizontalStory from "@/components/ProjectHorizontalStory";
 import detailImage from "@/assets/ecc6142c-cd15-40b1-8b06-c20d8b9fd15f.png";
 
 const projectDetails = [
@@ -256,6 +257,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </div>
         </div>
       </section>
+      <ProjectHorizontalStory project={project} />
     </main>
   );
 }
