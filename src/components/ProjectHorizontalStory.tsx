@@ -7,6 +7,11 @@ import imageDesktop from "@/assets/FinkoImage.png";
 import imageMobile from "@/assets/Image2.png";
 import imageEvent from "@/assets/f0171a17-242a-4d46-8b39-0c1f6dcd2ac3.png";
 
+const STORY_WIDTH_PX = 5200;
+const STORY_VIEWBOX_HEIGHT = 760;
+const STORY_LINE_PATH =
+  "M75 105 H2325 C2388 105 2428 116 2485 140 L2840 226 L3575 350 C3685 390 3744 442 3870 442 C3996 442 4058 376 4180 350 C4288 327 4358 336 4468 336 H4848";
+
 type ProjectStoryProps = {
   project: {
     tag: string;
@@ -64,8 +69,8 @@ export default function ProjectHorizontalStory({ project }: ProjectStoryProps) {
           attr: { width: drawUntilX },
         });
         gsap.set(progressDot, {
-          x: `${(dotPoint.x / 3000) * 300}vw`,
-          y: `${(dotPoint.y / 760) * 100}vh`,
+          x: dotPoint.x,
+          y: `${(dotPoint.y / STORY_VIEWBOX_HEIGHT) * 100}vh`,
         });
       };
 
@@ -117,21 +122,22 @@ export default function ProjectHorizontalStory({ project }: ProjectStoryProps) {
 
         <div
           ref={trackRef}
-          className="relative h-full w-[300vw] will-change-transform"
+          className="relative h-full will-change-transform"
+          style={{ width: `${STORY_WIDTH_PX}px` }}
         >
           <svg
             className="pointer-events-none absolute left-0 top-0 h-full w-full"
-            viewBox="0 0 3000 760"
+            viewBox={`0 0 ${STORY_WIDTH_PX} ${STORY_VIEWBOX_HEIGHT}`}
             preserveAspectRatio="none"
             aria-hidden="true"
           >
             <defs>
               <clipPath id="project-story-line-clip">
-                <rect ref={progressMaskRef} x="0" y="0" width="0" height="760" />
+                <rect ref={progressMaskRef} x="0" y="0" width="0" height={STORY_VIEWBOX_HEIGHT} />
               </clipPath>
             </defs>
             <path
-              d="M94 106 H1782 C1868 106 1920 130 2006 166 L2518 372 C2630 417 2695 444 2814 386 C2868 360 2900 350 2960 350"
+              d={STORY_LINE_PATH}
               fill="none"
               stroke="rgba(143,182,255,0.34)"
               strokeWidth="2"
@@ -139,7 +145,7 @@ export default function ProjectHorizontalStory({ project }: ProjectStoryProps) {
             />
             <path
               ref={progressPathRef}
-              d="M94 106 H1782 C1868 106 1920 130 2006 166 L2518 372 C2630 417 2695 444 2814 386 C2868 360 2900 350 2960 350"
+              d={STORY_LINE_PATH}
               clipPath="url(#project-story-line-clip)"
               fill="none"
               stroke="#3478ff"
@@ -148,7 +154,7 @@ export default function ProjectHorizontalStory({ project }: ProjectStoryProps) {
               vectorEffect="non-scaling-stroke"
             />
             <path
-              d="M2960 350 L2941 335 M2960 350 L2941 365"
+              d="M4848 336 L4827 320 M4848 336 L4827 352"
               fill="none"
               stroke="rgba(143,182,255,0.62)"
               strokeWidth="2"
@@ -161,22 +167,22 @@ export default function ProjectHorizontalStory({ project }: ProjectStoryProps) {
             aria-hidden="true"
           />
 
-          <div className="absolute left-[5vw] top-[9vh] text-[13px] font-black tracking-[-0.04em] text-white/86">
+          <div className="absolute left-[75px] top-[6vh] text-[13px] font-black tracking-[-0.04em] text-white/86">
             &lt;{project.tag.toLowerCase()}/&gt;
           </div>
 
-          <div className="absolute left-[23vw] top-[27vh]">
+          <div className="absolute left-[520px] top-[17vh]">
             <p className="text-[34px] font-medium leading-none tracking-[-0.06em] text-white">1440 px</p>
           </div>
 
-          <div className="absolute left-[23vw] top-[51vh] max-w-[400px]">
+          <div className="absolute left-[520px] top-[43vh] max-w-[400px]">
             <p className="text-[15px] font-medium uppercase tracking-[-0.04em] text-white">Desktop workspace</p>
             <p className="mt-3 text-[18px] leading-[1.5] text-white/50">
               A full-width interface for comparison, review, and confident operational decisions. {project.scope}
             </p>
           </div>
 
-          <div className="absolute left-[40vw] top-[27vh] h-[45vh] w-[36vw] overflow-hidden rounded-[4px] border border-[#0d388353] bg-[#071D46]/40 shadow-[0_0_38px_rgba(52,120,255,0.18)]">
+          <div className="absolute left-[860px] top-[19vh] h-[40vh] w-[1000px] overflow-hidden rounded-[4px] border border-[#0d388353] bg-[#071D46]/40 shadow-[0_0_38px_rgba(52,120,255,0.18)]">
             <img src={imageDesktop.src} alt="" className="h-full w-full object-cover" />
             <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(2,4,7,0.02),rgba(2,4,7,0.18))]" />
             <span className="absolute bottom-5 right-5 grid h-[68px] w-[68px] place-items-center rounded-full border border-white/45 bg-black/25 text-[20px] font-black text-white backdrop-blur-md">
@@ -184,11 +190,11 @@ export default function ProjectHorizontalStory({ project }: ProjectStoryProps) {
             </span>
           </div>
 
-          <div className="absolute left-[103vw] top-[15vh] h-[61vh] w-[21vw] overflow-hidden rounded-[7px] border border-[#0d388353] bg-[#071D46]/40 shadow-[0_0_34px_rgba(52,120,255,0.16)]">
+          <div className="absolute left-[2480px] top-[7vh] h-[64vh] w-[460px] overflow-hidden rounded-[7px] border border-[#0d388353] bg-[#071D46]/40 shadow-[0_0_34px_rgba(52,120,255,0.16)]">
             <img src={imageMobile.src} alt="" className="h-full w-full object-cover" />
           </div>
 
-          <div className="absolute left-[82vw] top-[19vh] w-[260px]">
+          <div className="absolute left-[2070px] top-[16vh] w-[310px]">
             <h3 className="text-[28px] font-black uppercase leading-[1.22] tracking-[-0.06em] text-white">
               Mobile
               <br />
@@ -196,13 +202,13 @@ export default function ProjectHorizontalStory({ project }: ProjectStoryProps) {
             </h3>
           </div>
 
-          <div className="absolute left-[128vw] top-[62vh] max-w-[350px]">
+          <div className="absolute left-[2865px] top-[56vh] max-w-[540px]">
             <p className="text-[11px] leading-[1.5] text-white/50">
               The mobile layer keeps the essential journey compact: quick checks, clear next actions, and enough context to continue work away from a desktop.
             </p>
           </div>
 
-          <div className="absolute left-[176vw] top-[16vh]">
+          <div className="absolute left-[3540px] top-[12vh]">
             <h3 className="text-[28px] font-black uppercase leading-[1.18] tracking-[-0.06em] text-white">
               Product
               <br />
@@ -210,22 +216,15 @@ export default function ProjectHorizontalStory({ project }: ProjectStoryProps) {
             </h3>
           </div>
 
-          <div className="absolute left-[184vw] top-[25vh] h-[292px] w-[292px] overflow-hidden rounded-full border border-[#0d388353] bg-[#071D46]/40 shadow-[0_0_38px_rgba(52,120,255,0.18)]">
+          <div className="absolute left-[3730px] top-[18vh] h-[430px] w-[430px] overflow-hidden rounded-full border border-[#0d388353] bg-[#071D46]/40 shadow-[0_0_38px_rgba(52,120,255,0.18)]">
             <img src={imageEvent.src} alt="" className="h-full w-full object-cover" />
           </div>
 
-          <div className="absolute left-[218vw] top-[62vh] max-w-[380px]">
+          <div className="absolute left-[4040px] top-[61vh] max-w-[560px]">
             <p className="text-[11px] leading-[1.5] text-white/50">
               {project.result} The product becomes more than a screen: it creates a reliable layer for patterns, decisions, and measurable improvement.
             </p>
           </div>
-
-          <a
-            href="#contact"
-            className="absolute left-[276vw] top-[42vh] grid h-[104px] w-[104px] place-items-center rounded-full bg-[#ff4b00] text-[10px] font-black uppercase text-white transition hover:scale-105 hover:bg-white hover:text-[#05090F]"
-          >
-            Start
-          </a>
         </div>
       </div>
     </section>
