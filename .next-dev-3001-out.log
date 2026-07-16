@@ -1,14 +1,25 @@
 
 > nova-renessans-next-gsap@1.0.0 dev
-> next dev --port 3001
+> next dev -p 3001
 
    ▲ Next.js 15.1.6
    - Local:        http://localhost:3001
    - Network:      http://192.168.1.24:3001
 
  ✓ Starting...
- ✓ Ready in 2.7s
+ ✓ Ready in 1960ms
  ○ Compiling / ...
- ✓ Compiled / in 3.8s (659 modules)
- GET / 200 in 4447ms
- ✓ Compiled in 757ms (329 modules)
+ ✓ Compiled / in 4.1s (695 modules)
+ GET / 200 in 4368ms
+ ✓ Compiled in 169ms (339 modules)
+ ✓ Compiled in 362ms (339 modules)
+ ✓ Compiled in 163ms (339 modules)
+ ✓ Compiled in 292ms (339 modules)
+ ✓ Compiled in 317ms (339 modules)
+ ✓ Compiled in 403ms (339 modules)
+ ✓ Compiled in 215ms (339 modules)
+ ✓ Compiled in 181ms (339 modules)
+ ✓ Compiled in 184ms (339 modules)
+ ✓ Compiled in 200ms (339 modules)
+ ✓ Compiled in 180ms (339 modules)
+ ✓ Compiled in 241ms (339 modules)
