@@ -1,0 +1,26 @@
+{
+  "source": {
+    "path": "/video/3dvideo.mp4",
+    "width": 1920,
+    "height": 1080,
+    "duration": 9.096439,
+    "fps": 60,
+    "frames": 543
+  },
+  "generatedAt": "2026-07-16T09:49:21.626Z",
+  "sequenceFps": 16.489969316564427,
+  "desktop": {
+    "path": "/values-sequence/desktop/",
+    "pattern": "frame_%04d.webp",
+    "frameCount": 150,
+    "width": 1200,
+    "quality": 82
+  },
+  "mobile": {
+    "path": "/values-sequence/mobile/",
+    "pattern": "frame_%04d.webp",
+    "frameCount": 150,
+    "width": 760,
+    "quality": 78
+  }
+}
