@@ -9,25 +9,25 @@ const values = [
     title: "IMPACT",
     description:
       "Driving measurable change through technology, strategy, and design that deliver lasting value for businesses and people.",
-    className: "left-[2%] top-[39.52%]",
+    className: "left-[2%] top-[39.52%] max-[1720px]:top-[32%]",
   },
   {
     title: "INNOVATION",
     description:
       "Continuously delving into the latest emerging technologies and innovative strategies to provide more future-ready solutions.",
-    className: "left-[2%] top-[57.58%]",
+    className: "left-[2%] top-[57.58%] max-[1720px]:top-[52%]",
   },
   {
     title: "COLLABORATION",
     description:
       "Growing lasting partnerships through openness, collaboration, and mutual trust because progress happens together.",
-    className: "left-[70.42%] top-[57.33%]",
+    className: "left-[70.42%] top-[57.33%] max-[1720px]:left-[68%] max-[1720px]:top-[44%]",
   },
   {
     title: "RESPONSIBILITY",
     description:
       "Committed to ethical innovation, sustainable practices, and delivering solutions that create positive social and environmental impact.",
-    className: "left-[70.42%] top-[75.39%]",
+    className: "left-[70.42%] top-[75.39%] max-[1720px]:left-[68%] max-[1720px]:top-[66%]",
   },
 ];
 
@@ -578,14 +578,14 @@ export default function ValuesSection() {
       <div className="section-container relative py-12 md:py-16 lg:py-0">
         <div
           ref={desktopStageRef}
-          className="relative mx-auto hidden aspect-[1194/825] w-full overflow-hidden bg-[#030304] [container-type:inline-size] md:block"
+          className="relative mx-auto hidden aspect-[1194/825] w-full overflow-hidden bg-[#030304] [container-type:inline-size] md:block max-[1720px]:aspect-[1194/620]"
         >
-          <h2 className="absolute  z-50 left-1/2 top-[12.85%] w-[68.68cqw] -translate-x-1/2 text-center text-[6.03cqw] font-normal leading-[0.96] tracking-[-0.088em] text-white">
+          <h2 className="absolute  z-50 left-1/2 top-[12.85%] w-[68.68cqw] -translate-x-1/2 text-center text-[5.25cqw] font-normal leading-[0.96] tracking-[-0.088em] text-white max-[1720px]:top-[5%] max-[1720px]:w-[54cqw] max-[1720px]:text-[3.45cqw]">
             <span className="mx-auto block w-fit border-b border-white/55 pb-[0.17cqw]">Driven by Values</span>
             <span className="mx-auto block w-fit border-b border-white/55 pb-[0.17cqw]">Guided by Responsibility</span>
           </h2>
 
-          <div className="values-media pointer-events-none absolute left-[20%] top-[27%] h-[54cqw] w-[54cqw]">
+          <div className="values-media pointer-events-none absolute left-[20%] top-[27%] h-[54cqw] w-[54cqw] max-[1720px]:left-[22%] max-[1720px]:top-[16%] max-[1720px]:h-[50cqw] max-[1720px]:w-[50cqw]">
             <div className="absolute inset-[-0.7cqw] rounded-full bg-[#061650]/42 blur-[3.6cqw]" />
             <canvas className="values-canvas relative h-full w-full select-none object-contain" aria-hidden="true" />
           </div>
@@ -596,7 +596,7 @@ export default function ValuesSection() {
         </div>
 
         <div ref={mobileStageRef} className="md:hidden">
-          <h2 className="mx-auto text-center text-[clamp(2.8rem,10vw,4.5rem)] font-normal leading-[0.96] tracking-[-0.088em] text-white">
+          <h2 className="mx-auto text-center text-[clamp(2.35rem,8.8vw,3.9rem)] font-normal leading-[0.96] tracking-[-0.088em] text-white">
             <span className="mx-auto block w-fit border-b border-white/55 pb-[2px]">Driven by Values</span>
             <span className="mx-auto mt-1 block w-fit border-b border-white/55 pb-[2px]">
               Guided by Responsibility
@@ -662,7 +662,7 @@ function ValueItem({ value }: { value: (typeof values)[number] }) {
   return (
     <article
       data-value-card
-      className={`values-card absolute isolate min-h-[8.29cqw] w-[29.31cqw] pl-[1.34cqw] ${value.className}`}
+      className={`values-card absolute isolate min-h-[8.29cqw] w-[29.31cqw] pl-[1.34cqw] max-[1720px]:min-h-[7.2cqw] max-[1720px]:w-[26.5cqw] ${value.className}`}
     >
       <span
         data-card-glow
@@ -677,18 +677,18 @@ function ValueItem({ value }: { value: (typeof values)[number] }) {
       <div className="flex items-center gap-[1.26cqw]">
         <CrossMark
           dataAttribute="card-icon"
-          className="h-[1.01cqw] w-[1.01cqw] [&>span:first-child]:w-[0.34cqw] [&>span:last-child]:h-[0.34cqw]"
+          className="h-[1.01cqw] w-[1.01cqw] max-[1720px]:h-[0.85cqw] max-[1720px]:w-[0.85cqw] [&>span:first-child]:w-[0.34cqw] max-[1720px]:[&>span:first-child]:w-[0.28cqw] [&>span:last-child]:h-[0.34cqw] max-[1720px]:[&>span:last-child]:h-[0.28cqw]"
         />
         <h3
           data-card-title
-          className="font-mono text-[2.01cqw] font-normal uppercase leading-none tracking-[-0.085em] text-white"
+          className="font-mono text-[2.01cqw] font-normal uppercase leading-none tracking-[-0.085em] text-white max-[1720px]:text-[1.82cqw]"
         >
           {value.title}
         </h3>
       </div>
       <p
         data-card-description
-        className="mt-[1.51cqw] max-w-[26.38cqw] text-[1.34cqw] font-normal leading-[1.26] tracking-[-0.052em] text-white/45"
+        className="mt-[1.51cqw] max-w-[26.38cqw] text-[1.34cqw] font-normal leading-[1.26] tracking-[-0.052em] text-white/45 max-[1720px]:mt-[1.15cqw] max-[1720px]:max-w-[25cqw] max-[1720px]:text-[1.18cqw]"
       >
         {value.description}
       </p>
